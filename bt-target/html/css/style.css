@@ -1,0 +1,36 @@
+.target-wrapper {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateY(-50%) translateX(-50%);
+    display: none;
+}
+
+.target-icon {
+    font-size: 3vh;
+}
+
+.target-label {
+    font-size: 1.3vh;
+    font-weight: bold;
+    position: absolute;
+    top: 17px;
+    left: 8px;
+    color: white;
+    font-family: sans-serif;
+    white-space: nowrap;
+    text-transform: uppercase;
+    user-select: none;
+}
+
+.target-label:hover {
+    color: rgb(30,144,255);
+}
+
+.icon {
+    font-size: 2.0vh;
+    position: absolute;
+    top: 15px;
+    right: -2px;
+    color: rgb(30,144,255);
+}
