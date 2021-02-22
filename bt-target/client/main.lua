@@ -2,11 +2,11 @@ local Models = {}
 local Zones = {}
 
 Citizen.CreateThread(function()
-	RegisterKeyMapping("+playerTarget", "Player Targeting", "keyboard", "LMENU") --Removed Bind System and added standalone version
-	RegisterCommand('+playerTarget', playerTargetEnable, false)
-	RegisterCommand('-playerTarget', playerTargetDisable, false)
-	TriggerEvent("chat:removeSuggestion", "/+playerTarget")
-	TriggerEvent("chat:removeSuggestion", "/-playerTarget")
+    RegisterKeyMapping("+playerTarget", "Player Targeting", "keyboard", "LMENU") --Removed Bind System and added standalone version
+    RegisterCommand('+playerTarget', playerTargetEnable, false)
+    RegisterCommand('-playerTarget', playerTargetDisable, false)
+    TriggerEvent("chat:removeSuggestion", "/+playerTarget")
+    TriggerEvent("chat:removeSuggestion", "/-playerTarget")
 end)
 
 function playerTargetEnable()
@@ -100,21 +100,21 @@ end
 --NUI CALL BACKS
 
 RegisterNUICallback('selectTarget', function(data, cb)
-	SetNuiFocus(false, false)
+    SetNuiFocus(false, false)
 
-	success = false
+    success = false
 
-	targetActive = false
+    targetActive = false
 
-	TriggerEvent(data.event)
+    TriggerEvent(data.event)
 end)
 
 RegisterNUICallback('closeTarget', function(data, cb)
-	SetNuiFocus(false, false)
+    SetNuiFocus(false, false)
 
-	success = false
+    success = false
 
-	targetActive = false
+    targetActive = false
 end)
 
 --Functions from https://forum.cfx.re/t/get-camera-coordinates/183555/14
