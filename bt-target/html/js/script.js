@@ -18,7 +18,10 @@ window.addEventListener('message', function(event) {
 
         $.each(item.data, function (index, item) {
             $(".target-label").append("<div id='target-"+index+"'<li><span class='target-icon'><i class='"+item.icon+"'></i></span>&nbsp"+item.label+"</li></div>");
-
+            $("#target-"+index).hover((e)=> {
+                $("#target-"+index).css("color",e.type === "mouseenter"?"rgb(30,144,255)":"white")
+            })
+            
             $("#target-"+index+"").css("padding-top", "7px");
 
             $("#target-"+index).data('TargetData', item.event);
