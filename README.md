@@ -52,6 +52,7 @@ Citizen.CreateThread(function()
         },
         distance = 2.5
     })
+    
     AddBoxZone("PoliceDuty", vector3(441.79, -982.07, 30.69), 0.4, 0.6, {
 	name="PoliceDuty",
 	heading=91,
