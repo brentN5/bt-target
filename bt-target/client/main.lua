@@ -25,11 +25,11 @@ function playerTargetEnable()
             if GetEntityType(entity) ~= 0 then
                 for _, model in pairs(Models) do
                     if _ == GetEntityModel(entity) then
-                        if DoesEntityExist(GetClosestObjectOfType(GetEntityCoords(PlayerPedId()), Models[_]["radius"], GetEntityModel(entity), 0, 0, 0)) then
+                        if #(plyCoords - coords) <= Models[_]["distance"] then
 
                             success = true
 
-                            SendNUIMessage({response = "validTarget", label = Models[_]["label"], icon = Models[_]["icon"], event = Models[_]["event"]})
+                            SendNUIMessage({response = "validTarget", data = Models[_]["options"]})
 
                             while success and targetActive do
                                 local plyCoords = GetEntityCoords(GetPlayerPed(-1))
@@ -42,11 +42,7 @@ function playerTargetEnable()
                                     SetCursorLocation(0.5, 0.5)
                                 end
 
-                                if GetEntityType(entity) ~= 0 then
-                                    if _ ~= GetEntityModel(entity) then
-                                        success = false
-                                    end
-                                else
+                                if GetEntityType(entity) == 0 or #(plyCoords - coords) > Models[_]["distance"] then
                                     success = false
                                 end
 
@@ -60,11 +56,12 @@ function playerTargetEnable()
 
             for _, zone in pairs(Zones) do
                 if Zones[_]:isPointInside(coords) then
-                    if #(vector3(Zones[_].center.x, Zones[_].center.y, Zones[_].center.z) - plyCoords) < zone.targetoptions.distance then
+                    if #(plyCoords - Zones[_].center) <= zone["targetoptions"]["distance"] then
 
                         success = true
 
-                        SendNUIMessage({ response = "validTarget", label = zone.targetoptions.label, icon = zone.targetoptions.icon, event = zone.targetoptions.event })
+                        SendNUIMessage({response = "validTarget", data = Zones[_]["targetoptions"]["options"]})
+
                         while success and targetActive do
                             local plyCoords = GetEntityCoords(GetPlayerPed(-1))
                             local hit, coords, entity = RayCastGamePlayCamera(20.0)
@@ -74,7 +71,9 @@ function playerTargetEnable()
                             if (IsControlJustReleased(0, 24) or IsDisabledControlJustReleased(0, 24)) then
                                 SetNuiFocus(true, true)
                                 SetCursorLocation(0.5, 0.5)
-                            elseif not Zones[_]:isPointInside(coords) or #(vector3(Zones[_].center.x, Zones[_].center.y, Zones[_].center.z) - plyCoords) > zone.targetoptions.distance then
+                            end
+                            
+                            if not Zones[_]:isPointInside(coords) or #(plyCoords - Zones[_].center) > zone.targetoptions.distance then
                                 success = false
                             end
 
