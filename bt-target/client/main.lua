@@ -25,7 +25,7 @@ function playerTargetEnable()
             if GetEntityType(entity) ~= 0 then
                 for _, model in pairs(Models) do
                     if _ == GetEntityModel(entity) then
-                        if DoesEntityExist(GetClosestObjectOfType(GetEntityCoords(PlayerPedId()), Models[_]["radius"], GetEntityModel(entity), 0, 0, 0)) then
+                        if DoesEntityExist(GetClosestObjectOfType(GetEntityCoords(PlayerPedId()), Models[_]["radius"], GetEntityModel(entity), 0, 0, 0)) or (#(GetEntityCoords(PlayerPedId()) - GetEntityCoords(entity)) < Models[_]["radius"]) then
 
                             success = true
 
