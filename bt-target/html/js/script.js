@@ -1,4 +1,4 @@
-let targetActive = false
+
 
 window.addEventListener('message', function(event) {
     let item = event.data;
@@ -8,7 +8,7 @@ window.addEventListener('message', function(event) {
         
         $('.target-wrapper').show();
 
-        $(".target-icon").css("color", "black");
+        $(".target-eye").css("color", "black");
     } else if (item.response == 'closeTarget') {
         $(".target-label").html("");
 
@@ -16,17 +16,37 @@ window.addEventListener('message', function(event) {
     } else if (item.response == 'validTarget') {
         $(".target-label").html("");
 
-        $(".target-label").append('<i class="icon '+item.icon+'"></i><div class="target-label" data-event="'+item.event+'" <p>'+item.label+'</p></div>');
+        $.each(item.data, function (index, item) {
+            $(".target-label").append("<div id='target-"+index+"'<li><span class='target-icon'><i class='"+item.icon+"'></i></span>&nbsp"+item.label+"</li></div>");
+            $("#target-"+index).hover((e)=> {
+                $("#target-"+index).css("color",e.type === "mouseenter"?"rgb(30,144,255)":"white")
+            })
+            
+            $("#target-"+index+"").css("padding-top", "7px");
 
-        $(".target-icon").css("color", "rgb(30,144,255)");
+            $("#target-"+index).data('TargetData', item.event);
+        });
 
-        targetActive = true
+        $(".target-eye").css("color", "rgb(30,144,255)");
     } else if (item.response == 'leftTarget') {
         $(".target-label").html("");
 
-        $(".target-icon").css("color", "black");
+        $(".target-eye").css("color", "black");
+    }
+});
 
-        targetActive = false
+$(document).on('mousedown', (event) => {
+    let element = event.target;
+
+    if (element.id.split("-")[0] === 'target') {
+        let TargetData = $("#"+element.id).data('TargetData');
+
+        $.post('http://bt-target/selectTarget', JSON.stringify({
+            event: TargetData,
+        }));
+
+        $(".target-label").html("");
+        $('.target-wrapper').hide();
     }
 });
 
@@ -34,26 +54,8 @@ $(document).on('keydown', function() {
     switch(event.keyCode) {
         case 27: // ESC
             $(".target-label").html("");
-
             $('.target-wrapper').hide();
             $.post('http://bt-target/closeTarget');
             break;
     }
-});
-
-$(document).on('click', '.target-label', function(evt){
-    evt.preventDefault();
-
-    var event = $(this).data('event');
-
-    if (event == undefined) {
-        return
-    }
-
-    $.post('http://bt-target/selectTarget', JSON.stringify({
-        event: event,
-    }));
-    
-    $(".target-label").html("");
-    $('.target-wrapper').hide();
 });
