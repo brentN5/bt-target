@@ -17,6 +17,11 @@ if Config.ESX then
         end
 
         PlayerJob = ESX.GetPlayerData().job
+
+        RegisterNetEvent('esx:setJob')
+		AddEventHandler('esx:setJob', function(job)
+		    PlayerJob = job
+		end)
     end)
 else
     PlayerJob = Config.NonEsxJob()
@@ -38,38 +43,37 @@ function playerTargetEnable()
             if GetEntityType(entity) ~= 0 then
                 for _, model in pairs(Models) do
                     if _ == GetEntityModel(entity) then
-                      for k , v in ipairs(Models[_]["job"]) do 
-                        if v == "all" or v == PlayerJob.name then
-                            if _ == GetEntityModel(entity) then
-                                if #(plyCoords - coords) <= Models[_]["distance"] then
+                        for k , v in ipairs(Models[_]["job"]) do 
+                            if v == "all" or v == PlayerJob.name then
+                                if _ == GetEntityModel(entity) then
+                                    if #(plyCoords - coords) <= Models[_]["distance"] then
 
-                                    success = true
+                                        success = true
 
-                                    SendNUIMessage({response = "validTarget", data = Models[_]["options"]})
+                                        SendNUIMessage({response = "validTarget", data = Models[_]["options"]})
 
-                                    while success and targetActive do
-                                        local plyCoords = GetEntityCoords(GetPlayerPed(-1))
-                                        local hit, coords, entity = RayCastGamePlayCamera(20.0)
+                                        while success and targetActive do
+                                            local plyCoords = GetEntityCoords(GetPlayerPed(-1))
+                                            local hit, coords, entity = RayCastGamePlayCamera(20.0)
 
-                                        DisablePlayerFiring(PlayerPedId(), true)
+                                            DisablePlayerFiring(PlayerPedId(), true)
 
-                                        if (IsControlJustReleased(0, 24) or IsDisabledControlJustReleased(0, 24)) then
-                                            SetNuiFocus(true, true)
-                                            SetCursorLocation(0.5, 0.5)
+                                            if (IsControlJustReleased(0, 24) or IsDisabledControlJustReleased(0, 24)) then
+                                                SetNuiFocus(true, true)
+                                                SetCursorLocation(0.5, 0.5)
+                                            end
+
+                                            if GetEntityType(entity) == 0 or #(plyCoords - coords) > Models[_]["distance"] then
+                                                success = false
+                                            end
+
+                                            Citizen.Wait(1)
                                         end
-
-                                        if GetEntityType(entity) == 0 or #(plyCoords - coords) > Models[_]["distance"] then
-                                            success = false
-                                        end
-
-                                        Citizen.Wait(1)
+                                        SendNUIMessage({response = "leftTarget"})
                                     end
-                                    SendNUIMessage({response = "leftTarget"})
                                 end
                             end
                         end
-                    end
-                end
                     end
                 end
             end
