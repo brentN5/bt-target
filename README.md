@@ -74,7 +74,7 @@ Citizen.CreateThread(function()
                 label = "Sign Off",
             },
         },
-        job = {"police", "ambulance", "mechanic"}
+        job = {"police", "ambulance", "mechanic"},
         distance = 1.5
     })
 end)
