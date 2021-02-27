@@ -8,7 +8,7 @@ Here a simple target tracking script that tracks where your player is looking at
 
 Example: 
 
-```
+```lua
 Citizen.CreateThread(function()
     local peds = {
         `a_f_m_bevhills_02`,
@@ -36,6 +36,7 @@ Citizen.CreateThread(function()
                 label = "Random 4",
             },
         },
+        job = {"garbage"}
         distance = 2.5
     })
 
@@ -50,6 +51,7 @@ Citizen.CreateThread(function()
                 label = "Coffee",
             },
         },
+        job = {"all"}
         distance = 2.5
     })
     
@@ -72,6 +74,7 @@ Citizen.CreateThread(function()
                 label = "Sign Off",
             },
         },
+        job = {"police", "ambulance", "mechanic"},
         distance = 1.5
     })
 end)
