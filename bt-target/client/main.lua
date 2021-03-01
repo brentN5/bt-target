@@ -46,6 +46,9 @@ function playerTargetEnable()
                         for k , v in ipairs(Models[_]["job"]) do 
                             if v == "all" or v == PlayerJob.name then
                                 if _ == GetEntityModel(entity) then
+				    if Models[_]["coords"] ~= nil then
+                                        coords = Models[_]["coords"]
+                                    end
                                     if #(plyCoords - coords) <= Models[_]["distance"] then
 
                                         success = true
