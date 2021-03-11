@@ -38,7 +38,8 @@ function playerTargetEnable()
     while targetActive do
         local plyCoords = GetEntityCoords(GetPlayerPed(-1))
         local hit, coords, entity = RayCastGamePlayCamera(20.0)
-
+	local nearestVehicle = GetNearestVehicle()
+		
         if hit == 1 then
             if GetEntityType(entity) ~= 0 then
                 for _, model in pairs(Models) do
