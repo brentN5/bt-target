@@ -86,13 +86,13 @@ function playerTargetEnable()
                         local distanceToBone = GetDistanceBetweenCoords(bonePos, plyCoords, 1)
                         if #(bonePos - coords) <= Bones[_]["distance"] then
                             for k , v in ipairs(Bones[_]["job"]) do
-                                if v == "all" or v == currentJob then
+                                if v == "all" or v == PlayerJob.name then
                                     if #(plyCoords - coords) <= Bones[_]["distance"] then
                                         success = true
                                         newOptions = {}
                                         for i, op in ipairs(Bones[_]["options"]) do
                                             for z, n in ipairs(Bones[_]["options"][i]['job']) do
-                                                if n == 'all' or n == currentJob then
+                                                if n == 'all' or n == PlayerJob.name then
                                                     table.insert(newOptions,Bones[_]["options"][i])
                                                 end
                                             end
