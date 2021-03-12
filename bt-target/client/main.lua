@@ -66,8 +66,9 @@ function playerTargetEnable()
             if GetEntityType(entity) ~= 0 then
                 for _, model in pairs(Models) do
                     if _ == GetEntityModel(entity) then
+                        if Models[_]["job"] == nil then Models[_]["job"] = { "all" } end -- Nil check for Job default to ALL if undefined
                         for k , v in ipairs(Models[_]["job"]) do 
-                            if v == "all" or v == PlayerJob.name then
+                            if ((v == "all") or (PlayerJob and v == PlayerJob.name)) then  -- Added Nil Check for PlayerJob
                                 if _ == GetEntityModel(entity) then
                                     if #(plyCoords - coords) <= Models[_]["distance"] then
 
@@ -103,8 +104,9 @@ function playerTargetEnable()
 
             for _, zone in pairs(Zones) do
                 if Zones[_]:isPointInside(coords) then
+                    if Zones[_]["job"] == nil then Zones[_]["job"] = { "all" } end -- Nil check for Job default to ALL if undefined
                     for k , v in ipairs(Zones[_]["targetoptions"]["job"]) do 
-                        if v == "all" or v == PlayerJob.name then
+                        if ((v == "all") or (PlayerJob and v == PlayerJob.name)) then -- Added Nil Check for PlayerJob
                             if #(plyCoords - Zones[_].center) <= zone["targetoptions"]["distance"] then
 
                                 success = true
