@@ -9,7 +9,7 @@ Citizen.CreateThread(function()
     TriggerEvent("chat:removeSuggestion", "/-playerTarget")
 end)
 
-if Config.ESX and not Config.QBCore then
+if Config.ESX then
     Citizen.CreateThread(function()
         while ESX == nil do
             TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
@@ -23,31 +23,8 @@ if Config.ESX and not Config.QBCore then
 		    PlayerJob = job
 		end)
     end)
-elseif Config.QBCore and not Config.ESX then
-    Citizen.CreateThread(function()
-        while QBCore == nil do
-            TriggerEvent('QBCore:GetObject', function(obj) QBCore = obj end)
-            Citizen.Wait(10)
-        end
-    end)
-
-    RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
-    AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
-        local PlayerData = QBCore.Functions.GetPlayerData()
-        PlayerJob = PlayerData.job
-    end)
-
-    RegisterNetEvent('QBCore:Client:OnPlayerUnload')
-    AddEventHandler('QBCore:Client:OnPlayerUnload', function()
-        isLoggedIn = false
-    end)
-
-    RegisterNetEvent('QBCore:Client:OnJobUpdate')
-    AddEventHandler('QBCore:Client:OnJobUpdate', function(JobInfo)
-        PlayerJob = JobInfo
-    end)
 else
-    PlayerJob = Config.CustomFrameworkJob()
+    PlayerJob = Config.NonEsxJob()
 end
 
 function playerTargetEnable()
