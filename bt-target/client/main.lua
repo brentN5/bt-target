@@ -1,5 +1,6 @@
 local Models = {}
 local Zones = {}
+Local Bones = {}
 
 Citizen.CreateThread(function()
     RegisterKeyMapping("+playerTarget", "Player Targeting", "keyboard", "LMENU") --Removed Bind System and added standalone version
@@ -91,11 +92,7 @@ function playerTargetEnable()
                                         success = true
                                         newOptions = {}
                                         for i, op in ipairs(Bones[_]["options"]) do
-                                            for z, n in ipairs(Bones[_]["options"][i]['job']) do
-                                                if n == 'all' or n == PlayerJob.name then
-                                                    table.insert(newOptions,Bones[_]["options"][i])
-                                                end
-                                            end
+                                        	table.insert(newOptions,Bones[_]["options"][i])
                                         end
                                         SendNUIMessage({response = "validTarget", data = newOptions})
     
@@ -113,8 +110,6 @@ function playerTargetEnable()
     
                                             if #(plyCoords - coords) > Bones[_]["distance"] then
                                                 success = false
-                                                targetActive = false
-                                                SendNUIMessage({response = "closeTarget"})
                                             end
     
                                             Citizen.Wait(1)
@@ -298,13 +293,11 @@ exports("AddTargetBone", AddTargetBone)
                 event = "localEye.door",
                 icon = "fas fa-door-open",
                 label = "Toggle Door",
-                job = {"all"}
             },
             {
                 event = "localEye.door.unlock",
                 icon = "fas fa-door-open",
                 label = "Unlock Door",
-                job = {"LEO","FD","DOT"}
             },
         },
         types = doors,
