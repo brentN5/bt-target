@@ -1,6 +1,7 @@
 Config = {}
 
 Config.ESX = true
+Config.QBCore = false
 
 
 -- Return an object in the format
@@ -8,7 +9,7 @@ Config.ESX = true
 --     name = job name
 -- }
 
-Config.NonEsxJob = function()
+Config.CustomFrameworkJob = function()
     local PlayerJob = {}
 
     return PlayerJob
