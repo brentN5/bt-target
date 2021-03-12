@@ -1,6 +1,6 @@
 local Models = {}
 local Zones = {}
-Local Bones = {}
+local Bones = {}
 
 Citizen.CreateThread(function()
     RegisterKeyMapping("+playerTarget", "Player Targeting", "keyboard", "LMENU") --Removed Bind System and added standalone version
