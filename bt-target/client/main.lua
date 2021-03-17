@@ -164,7 +164,7 @@ function playerTargetEnable()
 end
 
 function playerTargetDisable()
-    if success then return end
+    --if success then return end Commented out, apparently causes issues with vehicle bones
 
     targetActive = false
 
