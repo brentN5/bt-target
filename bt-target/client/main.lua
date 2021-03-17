@@ -29,7 +29,7 @@ else
 end
 
 function playerTargetEnable()
-    if success then return end
+    -- success then return end
     if IsPedArmed(PlayerPedId(), 6) then return end
 
     targetActive = true
@@ -164,7 +164,7 @@ function playerTargetEnable()
 end
 
 function playerTargetDisable()
-    --if success then return end Commented out, apparently causes issues with vehicle bones
+    if success then return end
 
     targetActive = false
 
