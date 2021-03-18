@@ -77,5 +77,28 @@ Citizen.CreateThread(function()
         job = {"police", "ambulance", "mechanic"},
         distance = 1.5
     })
+    local bones = {
+        "door_dside_f",
+        "door_pside_f",
+        "door_dside_r",
+        "door_pside_r",
+        "boot"
+    }
+    exports["bt-target"]:AddTargetBone(bones, {
+        options = {
+            {
+                event = "door",
+                icon = "fas fa-door-open",
+                label = "Toggle Door",
+            },
+            {
+                event = "unlock",
+                icon = "fas fa-door-open",
+                label = "Unlock Door",
+            },
+        },
+        job = {"police", "ambulance", "mechanic"},
+        distance = 1.5
+    })
 end)
 ```
