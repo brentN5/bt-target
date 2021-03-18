@@ -278,30 +278,3 @@ exports("AddTargetModel", AddTargetModel)
 
 exports("AddTargetBone", AddTargetBone)
 
---EXAMPLE USAGE OF NEW EDITS
---[[
-    local doors = {
-        "door_dside_f",
-        "door_pside_f",
-        "door_dside_r",
-        "door_pside_r",
-        "boot"
-    }
-    exports["bt-target"]:AddTargetBone(doors, {
-        options = {
-            {
-                event = "localEye.door",
-                icon = "fas fa-door-open",
-                label = "Toggle Door",
-            },
-            {
-                event = "localEye.door.unlock",
-                icon = "fas fa-door-open",
-                label = "Unlock Door",
-            },
-        },
-        types = doors,
-        job = {"all"},
-        distance = 1.5
-    })
-]]
