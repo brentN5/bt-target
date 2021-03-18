@@ -1,5 +1,6 @@
 local Models = {}
 local Zones = {}
+local Bones = {}
 
 Citizen.CreateThread(function()
     RegisterKeyMapping("+playerTarget", "Player Targeting", "keyboard", "LMENU") --Removed Bind System and added standalone version
@@ -28,7 +29,7 @@ else
 end
 
 function playerTargetEnable()
-    if success then return end
+    -- success then return end
     if IsPedArmed(PlayerPedId(), 6) then return end
 
     targetActive = true
@@ -38,7 +39,8 @@ function playerTargetEnable()
     while targetActive do
         local plyCoords = GetEntityCoords(GetPlayerPed(-1))
         local hit, coords, entity = RayCastGamePlayCamera(20.0)
-
+	local nearestVehicle = GetNearestVehicle()
+		
         if hit == 1 then
             if GetEntityType(entity) ~= 0 then
                 for _, model in pairs(Models) do
@@ -76,7 +78,51 @@ function playerTargetEnable()
                         end
                     end
                 end
+
+                --Vehicle Bones
+                if nearestVehicle then
+                    for _, bone in pairs(Bones) do
+                        local boneIndex = GetEntityBoneIndexByName(nearestVehicle, _)
+                        local bonePos = GetWorldPositionOfEntityBone(nearestVehicle, boneIndex)
+                        local distanceToBone = GetDistanceBetweenCoords(bonePos, plyCoords, 1)
+                        if #(bonePos - coords) <= Bones[_]["distance"] then
+                            for k , v in ipairs(Bones[_]["job"]) do
+                                if v == "all" or v == PlayerJob.name then
+                                    if #(plyCoords - coords) <= Bones[_]["distance"] then
+                                        success = true
+                                        newOptions = {}
+                                        for i, op in ipairs(Bones[_]["options"]) do
+                                        	table.insert(newOptions,Bones[_]["options"][i])
+                                        end
+                                        SendNUIMessage({response = "validTarget", data = newOptions})
+    
+                                        while success and targetActive do
+                                            local plyCoords = GetEntityCoords(GetPlayerPed(-1))
+                                            local hit, coords, entity = RayCastGamePlayCamera(7.0)
+                                            local boneI = GetEntityBoneIndexByName(nearestVehicle, _)
+    
+                                            DisablePlayerFiring(PlayerPedId(), true)
+    
+                                            if (IsControlJustReleased(0, 24) or IsDisabledControlJustReleased(0, 24)) then
+                                                SetNuiFocus(true, true)
+                                                SetCursorLocation(0.5, 0.5)
+                                            end
+    
+                                            if #(plyCoords - coords) > Bones[_]["distance"] then
+                                                success = false
+                                            end
+    
+                                            Citizen.Wait(1)
+                                        end
+                                        SendNUIMessage({response = "leftTarget"})
+                                    end
+                                end
+                            end
+                        end
+                    end
+                end
             end
+
 
             for _, zone in pairs(Zones) do
                 if Zones[_]:isPointInside(coords) then
@@ -145,6 +191,22 @@ RegisterNUICallback('closeTarget', function(data, cb)
     targetActive = false
 end)
 
+--Added functions
+function GetNearestVehicle()
+    local playerPed = GetPlayerPed(-1)
+    local playerCoords = GetEntityCoords(playerPed)
+    if not (playerCoords and playerPed) then
+        return
+    end
+
+    local pointB = GetEntityForwardVector(playerPed) * 0.001 + playerCoords
+
+    local shapeTest = StartShapeTestCapsule(playerCoords.x, playerCoords.y, playerCoords.z, pointB.x, pointB.y, pointB.z, 1.0, 10, playerPed, 7)
+    local _, hit, _, _, entity = GetShapeTestResult(shapeTest)
+
+    return (hit == 1 and IsEntityAVehicle(entity)) and entity or false
+end
+
 --Functions from https://forum.cfx.re/t/get-camera-coordinates/183555/14
 
 function RotationToDirection(rotation)
@@ -200,6 +262,12 @@ function AddTargetModel(models, parameteres)
     end
 end
 
+function AddTargetBone(bones, parameteres)
+    for _, bone in pairs(bones) do
+        Bones[bone] = parameteres
+    end
+end
+
 exports("AddCircleZone", AddCircleZone)
 
 exports("AddBoxZone", AddBoxZone)
@@ -207,3 +275,6 @@ exports("AddBoxZone", AddBoxZone)
 exports("AddPolyzone", AddPolyzone)
 
 exports("AddTargetModel", AddTargetModel)
+
+exports("AddTargetBone", AddTargetBone)
+
