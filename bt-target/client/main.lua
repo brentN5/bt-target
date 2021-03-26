@@ -9,6 +9,14 @@ Citizen.CreateThread(function()
     TriggerEvent("chat:removeSuggestion", "/-playerTarget")
 end)
 
+local WHITELISTED_EVENTS = {
+    ["niko:pickupbike"] = true,
+   }
+
+function IsEventWhitelisted(edata)
+  return WHITELISTED_EVENTS[edata] or false
+end
+
 if Config.ESX then
     Citizen.CreateThread(function()
         while ESX == nil do
@@ -128,13 +136,18 @@ end
 --NUI CALL BACKS
 
 RegisterNUICallback('selectTarget', function(data, cb)
+    local allowed = IsEventWhitelisted(data.event)
+    print(allowed)
     SetNuiFocus(false, false)
 
     success = false
 
     targetActive = false
-
-    TriggerEvent(data.event)
+    if allowed == true then
+        TriggerEvent(data.event)
+    else
+        --Trigger discord log, ect
+    end
 end)
 
 RegisterNUICallback('closeTarget', function(data, cb)
