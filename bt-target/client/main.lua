@@ -51,11 +51,9 @@ function playerTargetEnable()
                                         success = true
 
                                         local options = Models[_]["options"];
-                                        local retOptions;
-                                        if type(options) == "function" or rawget(options, '__cfx_functionReference') then
+                                        local retOptions = options;
+                                        if rawget(options, '__cfx_functionReference') then
                                             retOptions = options();
-                                        else
-                                            retOptions = options;
                                         end
                                         SendNUIMessage({response = "validTarget", data = retOptions})
 
@@ -93,14 +91,12 @@ function playerTargetEnable()
 
                                 success = true
 
-                                local options = Models[_]["options"];
-                                local retOptions;
-                                if type(options) == "function" or rawget(options, '__cfx_functionReference') then
-                                    retOptions = options();
-                                else
-                                    retOptions = options;
+                                local options = Zones[_]["targetoptions"];
+                                local retOptions = options.options;
+                                if rawget(options.options, '__cfx_functionReference') then
+                                    retOptions = options.options();
                                 end
-                                SendNUIMessage({response = "validTarget", data = retOptions});
+                                SendNUIMessage({response = "validTarget", data = retOptions})
                                 
                                 while success and targetActive do
                                     local plyCoords = GetEntityCoords(GetPlayerPed(-1))
