@@ -50,7 +50,14 @@ function playerTargetEnable()
 
                                         success = true
 
-                                        SendNUIMessage({response = "validTarget", data = Models[_]["options"]})
+                                        local options = Models[_]["options"];
+                                        local retOptions;
+                                        if type(options) == "function" or rawget(options, '__cfx_functionReference') then
+                                            retOptions = options();
+                                        else
+                                            retOptions = options;
+                                        end
+                                        SendNUIMessage({response = "validTarget", data = retOptions})
 
                                         while success and targetActive do
                                             local plyCoords = GetEntityCoords(GetPlayerPed(-1))
@@ -86,7 +93,15 @@ function playerTargetEnable()
 
                                 success = true
 
-                                SendNUIMessage({response = "validTarget", data = Zones[_]["targetoptions"]["options"]})
+                                local options = Models[_]["options"];
+                                local retOptions;
+                                if type(options) == "function" or rawget(options, '__cfx_functionReference') then
+                                    retOptions = options();
+                                else
+                                    retOptions = options;
+                                end
+                                SendNUIMessage({response = "validTarget", data = retOptions});
+                                
                                 while success and targetActive do
                                     local plyCoords = GetEntityCoords(GetPlayerPed(-1))
                                     local hit, coords, entity = RayCastGamePlayCamera(20.0)

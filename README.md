@@ -77,5 +77,35 @@ Citizen.CreateThread(function()
         job = {"police", "ambulance", "mechanic"},
         distance = 1.5
     })
+
+    local hillbilly = {
+        `a_m_m_hillbilly_01`
+    }
+
+    AddTargetModel(hillbilly, {
+        options = function()
+            local isFreemodeFPed = GetEntityModel(GetPlayerPed(-1)) == `mp_f_freemode_01`;
+
+            if isFreemodeFPed then
+                return {
+                    {
+                        event = "isfemale",
+                        icon = "far fa-clipboard",
+                        label = "You are female freemode ped",
+                    }
+                }
+            else
+                return {
+                    {
+                        event = "ismale",
+                        icon = "far fa-clipboard",
+                        label = "You are not female freemode ped",
+                    }
+                }
+            end
+        end,
+        job = {"all"}
+        distance = 2.5
+    })
 end)
 ```
