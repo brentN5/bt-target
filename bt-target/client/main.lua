@@ -30,6 +30,7 @@ end
 function playerTargetEnable()
     if success then return end
     if IsPedArmed(PlayerPedId(), 6) then return end
+    local nearestVehicle = GetNearestVehicle()
 
     targetActive = true
 
@@ -67,6 +68,49 @@ function playerTargetEnable()
                                                 success = false
                                             end
 
+                                            Citizen.Wait(1)
+                                        end
+                                        SendNUIMessage({response = "leftTarget"})
+                                    end
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+			
+	    if nearestVehicle then
+                    for _, bone in pairs(Bones) do
+                        local boneIndex = GetEntityBoneIndexByName(nearestVehicle, _)
+                        local bonePos = GetWorldPositionOfEntityBone(nearestVehicle, boneIndex)
+                        local distanceToBone = GetDistanceBetweenCoords(bonePos, plyCoords, 1)
+
+                        if #(bonePos - coords) <= Bones[_]["distance"] then
+                            for k , v in ipairs(Bones[_]["job"]) do
+                                if v == "all" or v == PlayerJob.name then
+                                    if #(plyCoords - coords) <= Bones[_]["distance"] then
+                                        success = true
+
+                                        SendNUIMessage({response = "validTarget", data = Bones[_]["options"]})
+    
+                                        while success and targetActive do
+                                            local plyCoords = GetEntityCoords(PlayerPedId())
+                                            local hit, coords, entity = RayCastGamePlayCamera(7.0)
+                                            local boneI = GetEntityBoneIndexByName(nearestVehicle, _)
+    
+                                            DisablePlayerFiring(PlayerPedId(), true)
+    
+                                            if (IsControlJustReleased(0, 24) or IsDisabledControlJustReleased(0, 24)) then
+                                                SetNuiFocus(true, true)
+                                                SetCursorLocation(0.5, 0.5)
+                                            end
+    
+                                            if #(plyCoords - coords) > Bones[_]["distance"] then
+                                                success = false
+                                                targetActive = false
+                                                SendNUIMessage({response = "closeTarget"})
+                                            end
+    
                                             Citizen.Wait(1)
                                         end
                                         SendNUIMessage({response = "leftTarget"})
@@ -177,6 +221,21 @@ function RayCastGamePlayCamera(distance)
     return b, c, e
 end
 
+function GetNearestVehicle()
+    local playerPed = GetPlayerPed(-1)
+    local playerCoords = GetEntityCoords(playerPed)
+    if not (playerCoords and playerPed) then
+        return
+    end
+
+    local pointB = GetEntityForwardVector(playerPed) * 0.001 + playerCoords
+
+    local shapeTest = StartShapeTestCapsule(playerCoords.x, playerCoords.y, playerCoords.z, pointB.x, pointB.y, pointB.z, 1.0, 10, playerPed, 7)
+    local _, hit, _, _, entity = GetShapeTestResult(shapeTest)
+
+    return (hit == 1 and IsEntityAVehicle(entity)) and entity or false
+end
+
 --Exports
 
 function AddCircleZone(name, center, radius, options, targetoptions)
@@ -200,6 +259,12 @@ function AddTargetModel(models, parameteres)
     end
 end
 
+function AddTargetBone(bones, parameteres)
+    for _, bone in pairs(bones) do
+        Bones[bone] = parameteres
+    end
+end
+
 exports("AddCircleZone", AddCircleZone)
 
 exports("AddBoxZone", AddBoxZone)
@@ -207,3 +272,5 @@ exports("AddBoxZone", AddBoxZone)
 exports("AddPolyzone", AddPolyzone)
 
 exports("AddTargetModel", AddTargetModel)
+
+exports("AddTargetBone", AddTargetBone)
