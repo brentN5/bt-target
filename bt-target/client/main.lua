@@ -1,5 +1,6 @@
 local Models = {}
 local Zones = {}
+local Bones = {}
 
 Citizen.CreateThread(function()
     RegisterKeyMapping("+playerTarget", "Player Targeting", "keyboard", "LMENU") --Removed Bind System and added standalone version
@@ -79,42 +80,41 @@ function playerTargetEnable()
                 end
             end
 			
-	    if nearestVehicle then
-                    for _, bone in pairs(Bones) do
-                        local boneIndex = GetEntityBoneIndexByName(nearestVehicle, _)
-                        local bonePos = GetWorldPositionOfEntityBone(nearestVehicle, boneIndex)
-                        local distanceToBone = GetDistanceBetweenCoords(bonePos, plyCoords, 1)
+            if nearestVehicle then
+                for _, bone in pairs(Bones) do
+                    local boneIndex = GetEntityBoneIndexByName(nearestVehicle, _)
+                    local bonePos = GetWorldPositionOfEntityBone(nearestVehicle, boneIndex)
+                    local distanceToBone = GetDistanceBetweenCoords(bonePos, plyCoords, 1)
 
-                        if #(bonePos - coords) <= Bones[_]["distance"] then
-                            for k , v in ipairs(Bones[_]["job"]) do
-                                if v == "all" or v == PlayerJob.name then
-                                    if #(plyCoords - coords) <= Bones[_]["distance"] then
-                                        success = true
+                    if #(bonePos - coords) <= Bones[_]["distance"] then
+                        for k , v in ipairs(Bones[_]["job"]) do
+                            if v == "all" or v == PlayerJob.name then
+                                if #(plyCoords - coords) <= Bones[_]["distance"] then
+                                    success = true
 
-                                        SendNUIMessage({response = "validTarget", data = Bones[_]["options"]})
-    
-                                        while success and targetActive do
-                                            local plyCoords = GetEntityCoords(PlayerPedId())
-                                            local hit, coords, entity = RayCastGamePlayCamera(7.0)
-                                            local boneI = GetEntityBoneIndexByName(nearestVehicle, _)
-    
-                                            DisablePlayerFiring(PlayerPedId(), true)
-    
-                                            if (IsControlJustReleased(0, 24) or IsDisabledControlJustReleased(0, 24)) then
-                                                SetNuiFocus(true, true)
-                                                SetCursorLocation(0.5, 0.5)
-                                            end
-    
-                                            if #(plyCoords - coords) > Bones[_]["distance"] then
-                                                success = false
-                                                targetActive = false
-                                                SendNUIMessage({response = "closeTarget"})
-                                            end
-    
-                                            Citizen.Wait(1)
+                                    SendNUIMessage({response = "validTarget", data = Bones[_]["options"]})
+
+                                    while success and targetActive do
+                                        local plyCoords = GetEntityCoords(PlayerPedId())
+                                        local hit, coords, entity = RayCastGamePlayCamera(7.0)
+                                        local boneI = GetEntityBoneIndexByName(nearestVehicle, _)
+
+                                        DisablePlayerFiring(PlayerPedId(), true)
+
+                                        if (IsControlJustReleased(0, 24) or IsDisabledControlJustReleased(0, 24)) then
+                                            SetNuiFocus(true, true)
+                                            SetCursorLocation(0.5, 0.5)
                                         end
-                                        SendNUIMessage({response = "leftTarget"})
+
+                                        if #(plyCoords - coords) > Bones[_]["distance"] then
+                                            success = false
+                                            targetActive = false
+                                            SendNUIMessage({response = "closeTarget"})
+                                        end
+
+                                        Citizen.Wait(1)
                                     end
+                                    SendNUIMessage({response = "leftTarget"})
                                 end
                             end
                         end
