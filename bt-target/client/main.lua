@@ -29,7 +29,7 @@ end
 
 function playerTargetEnable()
     if success then return end
-    local playerPed = GetPlayerPed(-1) -- Defining player ped id before running loop
+    local playerPed = PlayerPedId() -- Defining player ped id before running loop
     if IsPedArmed(playerPed, 6) then return end
 
     targetActive = true
