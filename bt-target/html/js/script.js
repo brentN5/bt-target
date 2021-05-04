@@ -14,17 +14,22 @@ window.addEventListener('message', function(event) {
 
         $('.target-wrapper').hide();
     } else if (item.response == 'validTarget') {
+        
+
+        
         $(".target-label").html("");
 
         $.each(item.data, function (index, item) {
-            $(".target-label").append("<div id='target-"+index+"'<li><span class='target-icon'><i class='"+item.icon+"'></i></span>&nbsp"+item.label+"</li></div>");
+            $(".target-label").append("<div class='circle' id='target-"+index+"'<li><span class='target-icon'><i class='"+item.icon+"'></i></span>&nbsp"+item.label+"</li></div>");
             $("#target-"+index).hover((e)=> {
                 $("#target-"+index).css("color",e.type === "mouseenter"?"rgb(30,144,255)":"white")
             })
             
             $("#target-"+index+"").css("padding-top", "7px");
 
-            $("#target-"+index).data('TargetData', item.event);
+            item.object = event.data.object
+            item.model = event.data.model
+            $("#target-"+index).data('TargetData', item);
         });
 
         $(".target-eye").css("color", "rgb(30,144,255)");
@@ -41,7 +46,7 @@ $(document).on('mousedown', (event) => {
     if (element.id.split("-")[0] === 'target') {
         let TargetData = $("#"+element.id).data('TargetData');
 
-        $.post('http://bt-target/selectTarget', JSON.stringify({
+        $.post('https://' + GetParentResourceName() + '/selectTarget', JSON.stringify({
             event: TargetData,
         }));
 
@@ -55,7 +60,7 @@ $(document).on('keydown', function() {
         case 27: // ESC
             $(".target-label").html("");
             $('.target-wrapper').hide();
-            $.post('http://bt-target/closeTarget');
+            $.post('https://' + GetParentResourceName() + '/closeTarget');
             break;
     }
 });
