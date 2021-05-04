@@ -1,7 +1,6 @@
 local Models = {}
 local Bones = {}
 local Zones = {}
-local UIActive = false
 
 Citizen.CreateThread(function()
     RegisterKeyMapping("+playerTarget", "Player Targeting", "keyboard", "LMENU") --Removed Bind System and added standalone version
@@ -177,9 +176,7 @@ end
 --NUI CALL BACKS
 
 RegisterNUICallback('selectTarget', function(data, cb)
-    print(ESX.DumpTable(data))
     SetNuiFocus(false, false)
-    UIActive = false
     success = false
 
     targetActive = false
@@ -193,7 +190,6 @@ end)
 
 RegisterNUICallback('closeTarget', function(data, cb)
     SetNuiFocus(false, false)
-    UIActive = false
     success = false
 
     targetActive = false
