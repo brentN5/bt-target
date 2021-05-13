@@ -265,6 +265,15 @@ function AddTargetBone(bones, parameteres)
     end
 end
 
+function RemoveZone(name)
+    if not Zones[name] then return end
+    if Zones[name].destroy then
+        Zones[name]:destroy()
+    end
+
+    Zones[name] = nil
+end
+
 exports("AddCircleZone", AddCircleZone)
 
 exports("AddBoxZone", AddBoxZone)
@@ -274,3 +283,5 @@ exports("AddPolyzone", AddPolyzone)
 exports("AddTargetModel", AddTargetModel)
 
 exports("AddTargetBone", AddTargetBone)
+
+exports("RemoveZone", RemoveZone)
