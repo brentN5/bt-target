@@ -50,8 +50,7 @@ function playerTargetEnable()
                                 NewOptions = {}
 
                                 for _, option in pairs(Models[_]["options"]) do
-                                    for _, job in pairs(option.job) do 
-                                        print(job)
+                                    for _, job in pairs(option.job) do
                                         if job == "all" or job == PlayerJob.name then
                                             table.insert(NewOptions, option)
                                         end
@@ -98,8 +97,7 @@ function playerTargetEnable()
                             NewOptions = {}
 
                             for _, option in pairs(Bones[_]["options"]) do
-                                for _, job in pairs(option.job) do 
-                                    print(job)
+                                for _, job in pairs(option.job) do
                                     if job == "all" or job == PlayerJob.name then
                                         table.insert(NewOptions, option)
                                     end
@@ -143,8 +141,7 @@ function playerTargetEnable()
                         NewOptions = {}
 
                         for _, option in pairs(Zones[_]["targetoptions"]["options"]) do
-                            for _, job in pairs(option.job) do 
-                                print(job)
+                            for _, job in pairs(option.job) do
                                 if job == "all" or job == PlayerJob.name then
                                     table.insert(NewOptions, option)
                                 end
