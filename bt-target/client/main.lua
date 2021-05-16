@@ -142,7 +142,7 @@ function playerTargetEnable()
                     if #(plyCoords - Zones[_].center) <= zone["targetoptions"]["distance"] then
                         NewOptions = {}
 
-                        for _, option in pairs(Zones[_]["options"]) do
+                        for _, option in pairs(Zones[_]["targetoptions"]["options"]) do
                             for _, job in pairs(option.job) do 
                                 print(job)
                                 if job == "all" or job == PlayerJob.name then
