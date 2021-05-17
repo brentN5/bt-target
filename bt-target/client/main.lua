@@ -168,7 +168,8 @@ function playerTargetEnable()
 
                             if not Zones[_]:isPointInside(coords) or #(plyCoords - Zones[_].center) > zone.targetoptions.distance then
                                 success = false
-                                https://github.com/jxad/bt-target
+                                targetActive = false
+                                SendNUIMessage({response = "closeTarget"})
                             end
 
 
