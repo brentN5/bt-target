@@ -24,9 +24,9 @@ if Config.ESX then
         PlayerJob = ESX.GetPlayerData().job
 
         RegisterNetEvent('esx:setJob')
-	    AddEventHandler('esx:setJob', function(job)
-	        PlayerJob = job
-	    end)
+	AddEventHandler('esx:setJob', function(job)
+	    PlayerJob = job
+	end)
     end)
 else
     PlayerJob = Config.NonEsxJob()
