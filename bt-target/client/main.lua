@@ -75,6 +75,8 @@ function playerTargetEnable()
 
                                     if GetEntityType(entity) == 0 or #(plyCoords - coords) > Models[_]["distance"] then
                                         success = false
+                                        targetActive = false
+                                        SendNUIMessage({response = "closeTarget"})                  
                                     end
 
                                     Citizen.Wait(1)
@@ -166,6 +168,7 @@ function playerTargetEnable()
 
                             if not Zones[_]:isPointInside(coords) or #(plyCoords - Zones[_].center) > zone.targetoptions.distance then
                                 success = false
+                                https://github.com/jxad/bt-target
                             end
 
 
