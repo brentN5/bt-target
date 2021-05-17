@@ -23,6 +23,11 @@ if Config.ESX then
 		AddEventHandler('esx:setJob', function(job)
 		    PlayerJob = job
 		end)
+
+        RegisterNetEvent('esx:playerLoaded')
+        AddEventHandler('esx:playerLoaded', function(xPlayer)
+            PlayerJob = xPlayer.job
+        end)
     end)
 else
     PlayerJob = Config.NonEsxJob()
@@ -76,7 +81,7 @@ function playerTargetEnable()
                                     if GetEntityType(entity) == 0 or #(plyCoords - coords) > Models[_]["distance"] then
                                         success = false
                                         targetActive = false
-                                        SendNUIMessage({response = "closeTarget"})                  
+                                        SendNUIMessage({response = "closeTarget"})
                                     end
 
                                     Citizen.Wait(1)
