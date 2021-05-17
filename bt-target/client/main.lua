@@ -17,17 +17,16 @@ if Config.ESX then
             Citizen.Wait(0)
         end
 
+        while ESX.GetPlayerData().job == nil do
+	    Citizen.Wait(10)
+        end
+
         PlayerJob = ESX.GetPlayerData().job
 
         RegisterNetEvent('esx:setJob')
-		AddEventHandler('esx:setJob', function(job)
-		    PlayerJob = job
-		end)
-
-        RegisterNetEvent('esx:playerLoaded')
-        AddEventHandler('esx:playerLoaded', function(xPlayer)
-            PlayerJob = xPlayer.job
-        end)
+	    AddEventHandler('esx:setJob', function(job)
+	        PlayerJob = job
+	    end)
     end)
 else
     PlayerJob = Config.NonEsxJob()
@@ -80,8 +79,6 @@ function playerTargetEnable()
 
                                     if GetEntityType(entity) == 0 or #(plyCoords - coords) > Models[_]["distance"] then
                                         success = false
-                                        targetActive = false
-                                        SendNUIMessage({response = "closeTarget"})
                                     end
 
                                     Citizen.Wait(1)
@@ -173,8 +170,6 @@ function playerTargetEnable()
 
                             if not Zones[_]:isPointInside(coords) or #(plyCoords - Zones[_].center) > zone.targetoptions.distance then
                                 success = false
-                                targetActive = false
-                                SendNUIMessage({response = "closeTarget"})
                             end
 
 
