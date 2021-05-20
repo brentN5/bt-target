@@ -7,6 +7,7 @@ Since the original is no longer maintained and pull requests are not looked at t
 - [brentN5](https://github.com/brentN5) - Original Author
 - [Mojito-Fivem](https://github.com/Mojito-Fivem) - Contributor and Active Maintainer
 - [TheeDeer](https://github.com/TheeDeer) - Contributed Vehicle Bone Support
+- [Cmoen11](https://github.com/Cmoen11) - Contributed ultrawide support
 
 
 ## Dependencies
