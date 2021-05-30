@@ -1,10 +1,8 @@
-fx_version 'adamant'
-
+fx_version 'cerulean'
 game 'gta5'
+version '1.5'
 
-dependencies {
-    "PolyZone"
-}
+dependency "PolyZone"
 
 ui_page 'html/index.html'
 
