@@ -2,6 +2,9 @@ local Models = {}
 local Zones = {}
 local Bones = {}
 
+-- Whitelist events
+local Events = {}
+
 Citizen.CreateThread(function()
     RegisterKeyMapping("+playerTarget", "Player Targeting", "keyboard", "LMENU") --Removed Bind System and added standalone version
     RegisterCommand('+playerTarget', playerTargetEnable, false)
@@ -195,6 +198,13 @@ end
 --NUI CALL BACKS
 
 RegisterNUICallback('selectTarget', function(data, cb)
+    -- If the event isn't whitelisted or they're not using bt-target, return
+    if Events[data.event] == nil or Events[data.event] == false then
+        TriggerServerEvent("bt-target:loginvalidcall", data.event)
+        return
+    end
+    if not targetActive then return end
+
     SetNuiFocus(false, false)
 
     success = false
@@ -264,27 +274,47 @@ end
 function AddCircleZone(name, center, radius, options, targetoptions)
     Zones[name] = CircleZone:Create(center, radius, options)
     Zones[name].targetoptions = targetoptions
+
+    for _, option in pairs(targetoptions.options) do
+        Events[option.event] = true
+    end
 end
 
 function AddBoxZone(name, center, length, width, options, targetoptions)
     Zones[name] = BoxZone:Create(center, length, width, options)
     Zones[name].targetoptions = targetoptions
+
+    for _, option in pairs(targetoptions) do
+        Events[option.event] = true
+    end
 end
 
 function AddPolyzone(name, points, options, targetoptions)
     Zones[name] = PolyZone:Create(points, options)
     Zones[name].targetoptions = targetoptions
+
+    for _, option in pairs(targetoptions.options) do
+        Events[option.event] = true
+    end
 end
 
 function AddTargetModel(models, parameteres)
     for _, model in pairs(models) do
         Models[model] = parameteres
     end
+
+    for _, option in pairs(parameteres.options) do
+        Events[option.event] = true
+    end
 end
 
 function AddTargetBone(bones, parameteres)
     for _, bone in pairs(bones) do
         Bones[bone] = parameteres
+    end
+
+    for _, option in pairs(parameteres.options) do
+        Events[option.event] = true
     end
 end
 
@@ -294,8 +324,12 @@ function RemoveZone(name)
         Zones[name]:destroy()
     end
 
+    for _, option in pairs(Zones[name].targetoptions.options) do
+        Events[option.event] = false
+    end
     Zones[name] = nil
 end
+
 
 exports("AddCircleZone", AddCircleZone)
 
