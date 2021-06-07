@@ -45,7 +45,7 @@ function playerTargetEnable()
     SendNUIMessage({response = "openTarget"})
 
     while targetActive do
-        local plyCoords = GetEntityCoords(GetPlayerPed(-1))
+        local plyCoords = GetEntityCoords(PlayerPedId())
         local hit, coords, entity = RayCastGamePlayCamera(20.0)
 
         if hit == 1 then
@@ -70,7 +70,7 @@ function playerTargetEnable()
                                 end
 
                                 while success and targetActive do
-                                    local plyCoords = GetEntityCoords(GetPlayerPed(-1))
+                                    local plyCoords = GetEntityCoords(PlayerPedId())
                                     local hit, coords, entity = RayCastGamePlayCamera(20.0)
 
                                     DisablePlayerFiring(PlayerPedId(), true)
@@ -255,7 +255,7 @@ function RayCastGamePlayCamera(distance)
 end
 
 function GetNearestVehicle()
-    local playerPed = GetPlayerPed(-1)
+    local playerPed = PlayerPedId()
     local playerCoords = GetEntityCoords(playerPed)
     if not (playerCoords and playerPed) then
         return
