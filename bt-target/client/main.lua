@@ -284,7 +284,7 @@ function AddBoxZone(name, center, length, width, options, targetoptions)
     Zones[name] = BoxZone:Create(center, length, width, options)
     Zones[name].targetoptions = targetoptions
 
-    for _, option in pairs(targetoptions) do
+    for _, option in pairs(targetoptions.options) do
         Events[option.event] = true
     end
 end
