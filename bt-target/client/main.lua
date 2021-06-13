@@ -38,13 +38,13 @@ end
 function playerTargetEnable()
     if success then return end
     if IsPedArmed(PlayerPedId(), 6) then return end
-    local nearestVehicle = GetNearestVehicle()
 
     targetActive = true
 
     SendNUIMessage({response = "openTarget"})
 
     while targetActive do
+	local nearestVehicle = GetNearestVehicle()
         local plyCoords = GetEntityCoords(PlayerPedId())
         local hit, coords, entity = RayCastGamePlayCamera(20.0)
 
@@ -131,7 +131,7 @@ function playerTargetEnable()
                                 if #(plyCoords - coords) > Bones[_]["distance"] then
                                     success = false
                                     targetActive = false
-                                    SendNUIMessage({response = "closeTarget"})
+                                    SendNUIMessage({response = "leftTarget"})
                                 end
 
                                 Citizen.Wait(1)
