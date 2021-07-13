@@ -27,9 +27,9 @@ if Config.ESX then
         PlayerJob = ESX.GetPlayerData().job
 
         RegisterNetEvent('esx:setJob')
-	AddEventHandler('esx:setJob', function(job)
-	    PlayerJob = job
-	end)
+        AddEventHandler('esx:setJob', function(job)
+            PlayerJob = job
+        end)
     end)
 else
     PlayerJob = Config.NonEsxJob()
@@ -57,9 +57,11 @@ function playerTargetEnable()
                                 NewOptions = {}
 
                                 for _, option in pairs(Models[_]["options"]) do
-                                    for _, job in pairs(option.job) do
-                                        if job == "all" or job == PlayerJob.name then
-                                            table.insert(NewOptions, option)
+                                    if option.shouldShow == nil or option.shouldShow() then
+                                        for _, job in pairs(option.job) do
+                                            if job == "all" or job == PlayerJob.name then
+                                                table.insert(NewOptions, option)
+                                            end
                                         end
                                     end
                                 end
@@ -104,9 +106,11 @@ function playerTargetEnable()
                             NewOptions = {}
 
                             for _, option in pairs(Bones[_]["options"]) do
-                                for _, job in pairs(option.job) do
-                                    if job == "all" or job == PlayerJob.name then
-                                        table.insert(NewOptions, option)
+                                if option.shouldShow == nil or option.shouldShow() then
+                                    for _, job in pairs(option.job) do
+                                        if job == "all" or job == PlayerJob.name then
+                                            table.insert(NewOptions, option)
+                                        end
                                     end
                                 end
                             end
@@ -148,9 +152,11 @@ function playerTargetEnable()
                         NewOptions = {}
 
                         for _, option in pairs(Zones[_]["targetoptions"]["options"]) do
-                            for _, job in pairs(option.job) do
-                                if job == "all" or job == PlayerJob.name then
-                                    table.insert(NewOptions, option)
+                            if option.shouldShow == nil or option.shouldShow() then
+                                for _, job in pairs(option.job) do
+                                    if job == "all" or job == PlayerJob.name then
+                                        table.insert(NewOptions, option)
+                                    end
                                 end
                             end
                         end
