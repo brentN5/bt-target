@@ -57,13 +57,11 @@ function playerTargetEnable()
                                 NewOptions = {}
 
                                 for _, option in pairs(Models[_]["options"]) do
-                                    if option.shouldShow == nil or option.shouldShow() then
-                                        for _, job in pairs(option.job) do
-                                            if job == "all" or job == PlayerJob.name then
-                                                table.insert(NewOptions, option)
-                                            end
-                                        end
-                                    end
+				    for _, job in pairs(option.job) do
+					if job == "all" or job == PlayerJob.name then
+					    table.insert(NewOptions, option)
+					end
+				    end
                                 end
 
                                 if NewOptions[1] ~= nil then
@@ -106,11 +104,9 @@ function playerTargetEnable()
                             NewOptions = {}
 
                             for _, option in pairs(Bones[_]["options"]) do
-                                if option.shouldShow == nil or option.shouldShow() then
-                                    for _, job in pairs(option.job) do
-                                        if job == "all" or job == PlayerJob.name then
-                                            table.insert(NewOptions, option)
-                                        end
+                                for _, job in pairs(option.job) do
+				    if job == "all" or job == PlayerJob.name then
+                                    	table.insert(NewOptions, option)
                                     end
                                 end
                             end
@@ -152,11 +148,9 @@ function playerTargetEnable()
                         NewOptions = {}
 
                         for _, option in pairs(Zones[_]["targetoptions"]["options"]) do
-                            if option.shouldShow == nil or option.shouldShow() then
-                                for _, job in pairs(option.job) do
-                                    if job == "all" or job == PlayerJob.name then
-                                        table.insert(NewOptions, option)
-                                    end
+                            for _, job in pairs(option.job) do
+                                if job == "all" or job == PlayerJob.name then
+                                    table.insert(NewOptions, option)
                                 end
                             end
                         end
