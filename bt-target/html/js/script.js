@@ -41,7 +41,7 @@ $(document).on('mousedown', (event) => {
     if (element.id.split("-")[0] === 'target') {
         let TargetData = $("#"+element.id).data('TargetData');
 
-        $.post('http://bt-target/selectTarget', JSON.stringify({
+        $.post('https://' + GetParentResourceName() + '/selectTarget', JSON.stringify({
             event: TargetData,
         }));
 
@@ -55,7 +55,7 @@ $(document).on('keydown', function() {
         case 27: // ESC
             $(".target-label").html("");
             $('.target-wrapper').hide();
-            $.post('http://bt-target/closeTarget');
+            $.post('https://' + GetParentResourceName() + '/closeTarget');
             break;
     }
 });
