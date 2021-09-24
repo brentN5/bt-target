@@ -1,4 +1,6 @@
-# bt-target
+# bt-target [DEPRECATED]
+
+**I made this resource a while ago and was busy to update etc. I have been informed that there are other better, updated target resources available. I suggest using those instead.**
  
 Dependencies: https://github.com/mkafrin/PolyZone
 
