@@ -29,14 +29,15 @@ end
 
 function playerTargetEnable()
     if success then return end
-    if IsPedArmed(PlayerPedId(), 6) then return end
+    local playerPed = PlayerPedId() -- Defining player ped id before running loop
+    if IsPedArmed(playerPed, 6) then return end
 
     targetActive = true
 
     SendNUIMessage({response = "openTarget"})
 
     while targetActive do
-        local plyCoords = GetEntityCoords(GetPlayerPed(-1))
+        local plyCoords = GetEntityCoords(playerPed)
         local hit, coords, entity = RayCastGamePlayCamera(20.0)
 
         if hit == 1 then
@@ -45,32 +46,30 @@ function playerTargetEnable()
                     if _ == GetEntityModel(entity) then
                         for k , v in ipairs(Models[_]["job"]) do 
                             if v == "all" or v == PlayerJob.name then
-                                if _ == GetEntityModel(entity) then
-                                    if #(plyCoords - coords) <= Models[_]["distance"] then
+                                if #(plyCoords - coords) <= Models[_]["distance"] then
 
-                                        success = true
+                                    success = true
 
-                                        SendNUIMessage({response = "validTarget", data = Models[_]["options"]})
+                                    SendNUIMessage({response = "validTarget", data = Models[_]["options"]})
 
-                                        while success and targetActive do
-                                            local plyCoords = GetEntityCoords(GetPlayerPed(-1))
-                                            local hit, coords, entity = RayCastGamePlayCamera(20.0)
+                                    while success and targetActive do
+                                        local plyCoords = GetEntityCoords(playerPed)
+                                        local hit, coords, entity = RayCastGamePlayCamera(20.0)
 
-                                            DisablePlayerFiring(PlayerPedId(), true)
+                                        DisablePlayerFiring(playerPed, true)
 
-                                            if (IsControlJustReleased(0, 24) or IsDisabledControlJustReleased(0, 24)) then
-                                                SetNuiFocus(true, true)
-                                                SetCursorLocation(0.5, 0.5)
-                                            end
-
-                                            if GetEntityType(entity) == 0 or #(plyCoords - coords) > Models[_]["distance"] then
-                                                success = false
-                                            end
-
-                                            Citizen.Wait(1)
+                                        if (IsControlJustReleased(0, 24) or IsDisabledControlJustReleased(0, 24)) then
+                                            SetNuiFocus(true, true)
+                                            SetCursorLocation(0.5, 0.5)
                                         end
-                                        SendNUIMessage({response = "leftTarget"})
+
+                                        if GetEntityType(entity) == 0 or #(plyCoords - coords) > Models[_]["distance"] then
+                                            success = false
+                                        end
+
+                                        Citizen.Wait(1)
                                     end
+                                    SendNUIMessage({response = "leftTarget"})
                                 end
                             end
                         end
@@ -88,10 +87,10 @@ function playerTargetEnable()
 
                                 SendNUIMessage({response = "validTarget", data = Zones[_]["targetoptions"]["options"]})
                                 while success and targetActive do
-                                    local plyCoords = GetEntityCoords(GetPlayerPed(-1))
+                                    local plyCoords = GetEntityCoords(playerPed)
                                     local hit, coords, entity = RayCastGamePlayCamera(20.0)
 
-                                    DisablePlayerFiring(PlayerPedId(), true)
+                                    DisablePlayerFiring(playerPed, true)
 
                                     if (IsControlJustReleased(0, 24) or IsDisabledControlJustReleased(0, 24)) then
                                         SetNuiFocus(true, true)
